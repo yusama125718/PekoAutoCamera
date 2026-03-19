@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -22,6 +23,9 @@ namespace PekoAutoCamera
         private bool red_high;
 
         private String logpath;
+        private long _position = 0;
+        private readonly CancellationTokenSource _cts = new();
+        private Task? _task;
         public LogTools(String path) {
             logpath = path;
             ball_x = 0F;
@@ -36,63 +40,57 @@ namespace PekoAutoCamera
         // 解析実行
         public void Execute()
         {
-            int BUFFER_SIZE = 32; // バッファーサイズ(あえて小さく設定)
-            int lineCountToWrite = 30; // 探索行数
-            var buffer = new byte[BUFFER_SIZE];
-            var foundCount = 0;
-
-            using (var fs = new FileStream(logpath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            _task = Task.Run(async () =>
             {
-                // 検索ブロック位置の繰り返し
-                for (var i = 0; ; i++)
-                {
-                    if (fs.Length <= i * BUFFER_SIZE)
-                    {
-                        // ファイルの先頭まで達した場合
-                        Console.WriteLine("NOT FOUND");
-                        string log = "";
+                // 追記読み込み用
+                using var fs = new FileStream(
+                    logpath,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.ReadWrite | FileShare.Delete
+                );
 
-                        using (var sr = new StreamReader(fs, Encoding.UTF8))
-                        {
-                            log = sr.ReadToEnd();
-                        }
-                        return;
+                using var sr = new StreamReader(fs, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+
+                // 既存末尾から開始したいならこれ
+                _position = fs.Length;
+                fs.Seek(_position, SeekOrigin.Begin);
+
+                while (!_cts.Token.IsCancellationRequested)
+                {
+                    if (fs.Length < _position)
+                    {
+                        // ログローテーションや再生成
+                        _position = 0;
+                        fs.Seek(0, SeekOrigin.Begin);
+                        sr.DiscardBufferedData();
                     }
 
-                    // ブロック開始位置に移動
-                    var offset = Math.Min((int)fs.Length, (i + 1) * BUFFER_SIZE);
-                    fs.Seek(-offset, SeekOrigin.End);
-
-                    // ブロックの読み込み
-                    var readLength = offset - BUFFER_SIZE * i;
-                    for (var j = 0; j < readLength; j += fs.Read(buffer, j, readLength - j)) ;
-
-                    // ブロック内の改行コードの検索
-                    for (var k = 0; k < readLength; k++)
+                    if (fs.Length > _position)
                     {
-                        if (buffer[k] == 0x0A)
+                        fs.Seek(_position, SeekOrigin.Begin);
+                        sr.DiscardBufferedData();
+
+                        string? line;
+                        while ((line = sr.ReadLine()) != null)
                         {
-                            var sr = new System.IO.StreamReader(fs, Encoding.UTF8);
-                            fs.Seek(k + 3, SeekOrigin.Current);
-                            string line = sr.ReadLine();
-                            if (line != null && line.Contains("PEKO_INFO:"))
+                            if (line.Contains("PEKO_INFO:"))
                             {
                                 // PEKO_INFO:以降のみを解析する
                                 string key = "PEKO_INFO:";
                                 line = line.Substring(line.IndexOf(key) + key.Length);
+                                Debug.WriteLine(line);
                                 // PEKO PEKO BATTLEのログだった場合
                                 AnalyzeLog(line);
                             }
-                            foundCount++;
-                            if (foundCount == lineCountToWrite)
-                            {
-                                // 所定の行数を解析した場合
-                                return;
-                            }
                         }
+
+                        _position = fs.Position;
                     }
+
+                    await Task.Delay(100, _cts.Token);
                 }
-            }
+            }, _cts.Token);
         }
 
         // ログ解析

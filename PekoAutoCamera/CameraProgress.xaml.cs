@@ -38,14 +38,11 @@ namespace PekoAutoCamera
         private async void LoopMethod()
         {
             LogTools logtool = new LogTools(logpath);
+            logtool.Execute();
             try
             {
                 while (!_cts.Token.IsCancellationRequested)
                 {
-                    await Task.Run(() =>
-                    {
-                        logtool.Execute();
-                    });
                     ball_x.Text = logtool.GetBallX().ToString();
                     ball_y.Text = logtool.GetBallY().ToString();
                     ball_z.Text = logtool.GetBallZ().ToString();

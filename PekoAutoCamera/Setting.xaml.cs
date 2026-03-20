@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,9 @@ namespace PekoAutoCamera
     /// </summary>
     public partial class Setting : Page
     {
+        Regex number_regex = new Regex("[^0-9]+");
+
+
         public Setting()
         {
             InitializeComponent();
@@ -37,6 +41,10 @@ namespace PekoAutoCamera
                 }
             }
             logpath_txt.Text = log_file;
+
+            // OSC接続情報の初期値を設定
+            osc_address.Text = "127.0.0.1";
+            osc_port.Text = "9000";
         }
 
         // 開始ボタン
@@ -48,15 +56,39 @@ namespace PekoAutoCamera
                 MessageBox.Show("ログパスのファイルが存在しません", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            // ポート番号の確認
+            if (number_regex.IsMatch(osc_port.Text))
+            {
+                MessageBox.Show("ポート番号は数字で入力してください", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            int port = int.Parse(osc_port.Text);
+            if (port < 0 || 25535 < port)
+            {
+                MessageBox.Show("ポート番号は0から25535の範囲で入力してください", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             // 画面切り替え
-            CameraProgress content = new CameraProgress(logpath_txt.Text);
+            CameraProgress content = new CameraProgress(logpath_txt.Text, osc_address.Text, port);
             NavigationService.Navigate(content);
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        // ポート番号を数字のみにする
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            var text = ((TextBox)sender).Text + e.Text;
+            e.Handled = number_regex.IsMatch(text);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace PekoAutoCamera
         private long _position = 0;
         private readonly CancellationTokenSource _cts = new();
         private Task? _task;
+
         public LogTools(String path) {
             logpath = path;
             ball_x = 0F;
@@ -79,7 +80,6 @@ namespace PekoAutoCamera
                                 // PEKO_INFO:以降のみを解析する
                                 string key = "PEKO_INFO:";
                                 line = line.Substring(line.IndexOf(key) + key.Length);
-                                Debug.WriteLine(line);
                                 // PEKO PEKO BATTLEのログだった場合
                                 AnalyzeLog(line);
                             }
@@ -132,7 +132,6 @@ namespace PekoAutoCamera
                         string target_str = line.Substring(line.IndexOf(target_key) + target_key.Length);
                         int target_end = target_str.IndexOf(' ');
                         if (target_end > 0) target_str = target_str.Substring(0, target_end);
-                        Debug.WriteLine(target_str);
 
                         switch (target_str)
                         {

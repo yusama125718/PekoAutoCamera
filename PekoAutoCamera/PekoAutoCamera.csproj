@@ -8,4 +8,18 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="assets\onigiri.png" />
+    <None Remove="assets\peko_map.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Rug.Osc" Version="1.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\onigiri.png" />
+    <Resource Include="assets\peko_map.png" />
+  </ItemGroup>
+
 </Project>

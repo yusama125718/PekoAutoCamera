@@ -9,23 +9,32 @@
       Title="CameraProgress">
 
     <Grid Background="#FF75D0DC">
-        <Grid HorizontalAlignment="Left" Height="228" Margin="27,50,0,0" VerticalAlignment="Top" Width="209" Background="White">
+        <Grid HorizontalAlignment="Left" Height="228" Margin="27,50,0,0" VerticalAlignment="Top" Width="160" Background="White">
             <Label Content="おにぎり位置" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
             <Label Content="クリスタル状態" HorizontalAlignment="Left" Margin="10,119,0,0" VerticalAlignment="Top"/>
             <Label Content="X" HorizontalAlignment="Left" Margin="28,36,0,0" VerticalAlignment="Top"/>
             <Label Content="Y" HorizontalAlignment="Left" Margin="28,62,0,0" VerticalAlignment="Top"/>
             <Label Content="Z" HorizontalAlignment="Left" Margin="28,88,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.707,-0.581"/>
-            <TextBlock x:Name="ball_x" HorizontalAlignment="Left" Margin="74,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="ja-jp" Text="0.0"/></TextBlock>
-            <TextBlock x:Name="ball_y" HorizontalAlignment="Left" Margin="74,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.637,1.458"><Run Language="ja-jp" Text="0.0"/></TextBlock>
-            <TextBlock x:Name="ball_z" HorizontalAlignment="Left" Margin="74,93,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="ja-jp" Text="0.0"/></TextBlock>
+            <TextBlock x:Name="ball_x_text" HorizontalAlignment="Left" Margin="74,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="ja-jp" Text="0.0"/></TextBlock>
+            <TextBlock x:Name="ball_y_text" HorizontalAlignment="Left" Margin="74,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" RenderTransformOrigin="0.637,1.458"><Run Language="ja-jp" Text="0.0"/></TextBlock>
+            <TextBlock x:Name="ball_z_text" HorizontalAlignment="Left" Margin="74,93,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="ja-jp" Text="0.0"/></TextBlock>
             <Label Content="赤" HorizontalAlignment="Left" Margin="28,150,0,0" VerticalAlignment="Top" Background="#FFFFAFAF"/>
             <Label Content="青" HorizontalAlignment="Left" Margin="28,181,0,0" VerticalAlignment="Top" Background="#FFAFAFFF"/>
-            <TextBlock x:Name="red_low" HorizontalAlignment="Left" Margin="70,155,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFFFAFAF"><Run Language="ja-jp" Text="低台"/></TextBlock>
-            <TextBlock x:Name="blue_low" HorizontalAlignment="Left" Margin="70,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFAFAFFF"><Run Language="ja-jp" Text="低台"/></TextBlock>
-            <TextBlock x:Name="red_high" HorizontalAlignment="Left" Margin="104,155,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFFFAFAF"><Run Language="ja-jp" Text="高台"/></TextBlock>
-            <TextBlock x:Name="blue_high" HorizontalAlignment="Left" Margin="104,186,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFAFAFFF"><Run Language="ja-jp" Text="高台"/></TextBlock>
+            <TextBlock x:Name="red_low_text" HorizontalAlignment="Left" Margin="65,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFFFAFAF" Padding="5,5,5,5"><Run Language="ja-jp" Text="低台"/></TextBlock>
+            <TextBlock x:Name="blue_low_text" HorizontalAlignment="Left" Margin="65,181,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFAFAFFF" Padding="5,5,5,5"><Run Language="ja-jp" Text="低台"/></TextBlock>
+            <TextBlock x:Name="red_high_text" HorizontalAlignment="Left" Margin="106,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFFFAFAF" Padding="5,5,5,5"><Run Language="ja-jp" Text="高台"/></TextBlock>
+            <TextBlock x:Name="blue_high_text" HorizontalAlignment="Left" Margin="106,181,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Background="#FFAFAFFF" Padding="5,5,5,5"><Run Language="ja-jp" Text="高台"/></TextBlock>
         </Grid>
         <Label Content="情報" HorizontalAlignment="Left" Margin="27,19,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Label Content="マップ" HorizontalAlignment="Left" Margin="231,19,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Grid HorizontalAlignment="Left" Height="298" Margin="231,55,0,0" VerticalAlignment="Top" Width="366" Background="White">
+            <Image Margin="10,10,10,10" Source="assets/peko_map.png"/>
+            <Image x:Name="origiri" Margin="176,142,176,142" Source="assets/onigiri.png" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.RenderTransform>
+                    <TranslateTransform x:Name="OrigiriTranslate"/>
+                </Image.RenderTransform>
+            </Image>
+        </Grid>
 
     </Grid>
 </Page>

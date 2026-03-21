@@ -21,11 +21,14 @@ namespace PekoAutoCamera
         private bool blue_high;
         private bool red_low;
         private bool red_high;
+        private float break_delay;
+        private bool break_flg;
 
         private String logpath;
         private long _position = 0;
         private readonly CancellationTokenSource _cts = new();
         private Task? _task;
+        private int loop_delay = 100;
 
         public LogTools(String path) {
             logpath = path;
@@ -36,6 +39,8 @@ namespace PekoAutoCamera
             blue_high = true;
             red_low = true;
             red_high = true;
+            break_delay = 0;
+            break_flg = false;
         }
 
         // 解析実行
@@ -87,14 +92,12 @@ namespace PekoAutoCamera
 
                         _position = fs.Position;
                     }
-
-                    await Task.Delay(100, _cts.Token);
                 }
             }, _cts.Token);
         }
 
         // ログ解析
-        private void AnalyzeLog(string line)
+        private async void AnalyzeLog(string line)
         {
             // ログの種類を取得
             string type = "";
@@ -137,18 +140,22 @@ namespace PekoAutoCamera
                         {
                             case "ORANGE_HIGH":
                                 red_high = false;
+                                await SetBreakFlg(2000);
                                 break;
 
                             case "ORANGE_LOW":
                                 red_low = false;
+                                await SetBreakFlg(2000);
                                 break;
 
                             case "BLUE_HIGH":
                                 blue_high = false;
+                                await SetBreakFlg(2000);
                                 break;
 
                             case "BLUE_LOW":
                                 blue_low = false;
+                                await SetBreakFlg(2000);
                                 break;
 
                             case "RED_GIRL":
@@ -157,11 +164,20 @@ namespace PekoAutoCamera
                                 red_low = true;
                                 blue_high = true;
                                 blue_low = true;
+                                await SetBreakFlg(10000);
                                 break;
                         }
                     }
                     break;
             }
+        }
+
+        // クリスタル破壊フラグを一定時間保持する
+        async Task SetBreakFlg(int time)
+        {
+            break_flg = true;
+            await Task.Delay(time);
+            break_flg = false;
         }
 
         public float GetBallX()
@@ -197,6 +213,11 @@ namespace PekoAutoCamera
         public bool GetBlueLow()
         {
             return blue_low;
+        }
+
+        public bool GetBreakFlg()
+        {
+            return break_flg;
         }
     }
 }

@@ -10,11 +10,11 @@
 
     <Grid Background="#FF75D0DC">
         <Label Content="PEKO PEKO BATTLE カメラ制御ツール" HorizontalAlignment="Center" Margin="0,62,0,0" VerticalAlignment="Top" FontSize="36"/>
-        <Label Content="ログパス" HorizontalAlignment="Left" Margin="138,165,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="logpath_txt" HorizontalAlignment="Left" Margin="230,169,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="498" TextChanged="TextBox_TextChanged"/>
+        <Label Content="ログパス" HorizontalAlignment="Left" Margin="84,165,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="logpath_txt" HorizontalAlignment="Left" Margin="175,169,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="553" TextChanged="TextBox_TextChanged"/>
         <Button Content="開始" HorizontalAlignment="Center" Margin="0,277,0,0" VerticalAlignment="Top" Click="Button_Click" Height="64" Width="152"/>
-        <Label Content="OSC送信先" HorizontalAlignment="Left" Margin="138,196,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="osc_address" HorizontalAlignment="Left" Margin="230,200,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="246" TextChanged="TextBox_TextChanged_1"/>
+        <Label Content="OSC送信先" HorizontalAlignment="Left" Margin="84,196,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="osc_address" HorizontalAlignment="Left" Margin="175,200,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="246" TextChanged="TextBox_TextChanged_1"/>
         <Label Content="OSCポート" HorizontalAlignment="Left" Margin="569,196,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="osc_port" HorizontalAlignment="Left" Margin="657,200,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="71" TextChanged="TextBox_TextChanged_1" PreviewTextInput="TextBox_PreviewTextInput"/>
 

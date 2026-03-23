@@ -30,6 +30,12 @@ namespace PekoAutoCamera
         private Task? _task;
         private int loop_delay = 100;
 
+        public event Action? OnRedHighChanged;
+        public event Action? OnRedLowChanged;
+        public event Action? OnBlueHighChanged;
+        public event Action? OnBlueLowChanged;
+        public event Action? OnGirlChanged;
+
         public LogTools(String path) {
             logpath = path;
             ball_x = 0F;
@@ -140,22 +146,22 @@ namespace PekoAutoCamera
                         {
                             case "ORANGE_HIGH":
                                 red_high = false;
-                                await SetBreakFlg(2000);
+                                OnRedHighChanged?.Invoke();
                                 break;
 
                             case "ORANGE_LOW":
                                 red_low = false;
-                                await SetBreakFlg(2000);
+                                OnRedLowChanged?.Invoke();
                                 break;
 
                             case "BLUE_HIGH":
                                 blue_high = false;
-                                await SetBreakFlg(2000);
+                                OnBlueHighChanged?.Invoke();
                                 break;
 
                             case "BLUE_LOW":
                                 blue_low = false;
-                                await SetBreakFlg(2000);
+                                OnBlueLowChanged?.Invoke();
                                 break;
 
                             case "RED_GIRL":
@@ -164,20 +170,12 @@ namespace PekoAutoCamera
                                 red_low = true;
                                 blue_high = true;
                                 blue_low = true;
-                                await SetBreakFlg(10000);
+                                OnGirlChanged?.Invoke();
                                 break;
                         }
                     }
                     break;
             }
-        }
-
-        // クリスタル破壊フラグを一定時間保持する
-        async Task SetBreakFlg(int time)
-        {
-            break_flg = true;
-            await Task.Delay(time);
-            break_flg = false;
         }
 
         public float GetBallX()

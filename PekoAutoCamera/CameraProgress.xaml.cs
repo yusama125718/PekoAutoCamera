@@ -291,7 +291,7 @@ namespace PekoAutoCamera
                 messages.Add(new OscMessage("/avatar/parameters/02PosY", new object[] { (float)_105BankConverter.ConvertY(cam2.y) }));
                 messages.Add(new OscMessage("/avatar/parameters/02PosZ", new object[] { (float)_105BankConverter.ConvertZ(cam2.z) }));
                 messages.Add(new OscMessage("/avatar/parameters/02RotH", new object[] { (float)_105BankConverter.ConvertHorizontal(fixed_horizontal) }));
-                messages.Add(new OscMessage("/avatar/parameters/02RotV", new object[] { (float)_105BankConverter.ConvertVertical(temp_angle.vertical - 10) }));
+                messages.Add(new OscMessage("/avatar/parameters/02RotV", new object[] { (float)_105BankConverter.ConvertVertical(cam2.vertical) }));
                 messages.Add(new OscMessage("/avatar/parameters/02FoV", new object[] { (float)_105BankConverter.ConvertFov(cam2.fov) }));
             }
 
